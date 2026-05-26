@@ -1,0 +1,407 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Wolfram 14.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       154,          7]
+NotebookDataLength[     16156,        399]
+NotebookOptionsPosition[     11818,        329]
+NotebookOutlinePosition[     12217,        345]
+CellTagsIndexPosition[     12174,        342]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["\<\
+04. Terapia, szczepienie, dawkowanie, mutacje i funkcja Hilla\
+\>", "Title",ExpressionUUID->"16f02df1-ce21-8046-8af9-a7564641a8cc"],
+
+Cell["\<\
+Ten notebook pokazuje zastosowanie modelu do scenariuszy leczniczych i \
+immunologicznych. \
+\>", "Text",
+ CellChangeTimes->{
+  3.9885487170859604`*^9},ExpressionUUID->"acfdbd5f-a734-9d44-bfc5-\
+ebe10936236e"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Get", "[", 
+   RowBox[{"FileNameJoin", "[", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"NotebookDirectory", "[", "]"}], ",", 
+      " ", "\"\<FinalVirusModel.wl\>\""}], "}"}], "]"}], "]"}], 
+  ";"}]], "Input",
+ CellLabel->
+  "In[106]:=",ExpressionUUID->"6bc50cb3-babd-9642-bc26-ec7b63721f01"],
+
+Cell[BoxData["\<\"FinalVirusModel.wl loaded. Use RunSimpleScenario, \
+RunScenario or Experiment... functions.\"\>"], "Print",
+ CellChangeTimes->{
+  3.9886283006284943`*^9, 3.9886286254676723`*^9, 3.988631203787661*^9, 
+   3.9886312855754433`*^9, 3.9886318612450867`*^9, 3.988740276424243*^9, {
+   3.988740379045556*^9, 3.9887403830266943`*^9}, 3.988741018797717*^9, 
+   3.988741807554147*^9},
+ CellLabel->
+  "During evaluation of \
+In[106]:=",ExpressionUUID->"520329d4-f8d0-422a-98d7-903c67a733f1"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["1. Leczenie", "Section",
+ CellChangeTimes->{{3.9885517820512543`*^9, 
+  3.9885517824434757`*^9}},ExpressionUUID->"d9e93eac-278a-0544-9624-\
+49b305292d36"],
+
+Cell["\<\
+Lek zmniejsza produkcje nowych wolnych wirionow przez komorki zakazone i \
+zabija zaka\:017cone kom\[OAcute]rki. Jest to uproszczony odpowiednik \
+skutecznosci terapii w modelach kinetyki wirusowej.\
+\>", "Text",
+ CellChangeTimes->{{3.988553981628912*^9, 
+  3.9885539902886276`*^9}},ExpressionUUID->"9382ea16-c086-ae4c-bb8d-\
+47c696e936b9"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"dv", " ", "=", " ", 
+   RowBox[{"ExperimentDrugVaccination", "[", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{3.988603035807794*^9},
+ CellLabel->"In[97]:=",ExpressionUUID->"2047815e-5d83-2944-a4e7-620648b42cf8"],
+
+Cell[BoxData[
+ RowBox[{"dv", "[", "\"\<AnimationDrug\>\"", "]"}]], "Input",
+ CellChangeTimes->{
+  3.988603035807794*^9},ExpressionUUID->"31276c66-7e83-48e9-92aa-\
+e841f22b5640"],
+
+Cell[BoxData[
+ RowBox[{"dv", "[", "\"\<PlotDrug\>\"", "]"}]], "Input",
+ CellLabel->
+  "In[141]:=",ExpressionUUID->"e63f8276-e31b-1c4d-b22e-f4fbe9f7977e"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["2. Szczepienie", "Section",ExpressionUUID->"7cea90c8-f59f-c741-ae1f-a9149d50b8e6"],
+
+Cell["\<\
+Szczepienie modelujemy jako czesc komorek chronionych oraz poczatkowo wiekszy \
+poziom przeciwcial. To uproszczenie, ale dobrze pokazuje efekt zmniejszenia \
+puli komorek podatnych.\
+\>", "Text",ExpressionUUID->"4d803e78-8039-0740-9127-21fbc31f201f"],
+
+Cell[BoxData[
+ RowBox[{"dv", "[", "\"\<AnimationVaccination\>\"", "]"}]], "Input",
+ CellLabel->"In[98]:=",ExpressionUUID->"1a375669-a9a5-6841-84d8-5de982190d67"],
+
+Cell[BoxData[
+ RowBox[{"dv", "[", "\"\<PlotVaccination\>\"", "]"}]], "Input",
+ CellLabel->"In[99]:=",ExpressionUUID->"a429c23a-41af-fb44-84c1-19c0dbec8638"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["3. Strategie dawkowania", "Section",ExpressionUUID->"ff30d2d5-17b6-424c-a278-4f75e65eaf7d"],
+
+Cell["\<\
+Porownujemy wczesna i pozna interwencje oraz dawke jednorazowa i cykliczna. \
+Cykliczne dawkowanie moze utrzymywac skutecznosc leku w czasie, ale zalezy to \
+od eliminacji leku.\
+\>", "Text",ExpressionUUID->"59803989-2500-b048-a59c-c685e9d2269f"],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{
+   "tu", " ", "trzeba", " ", "b\:0119dzie", " ", "odpali\[CAcute]", " ", 
+    "jeszcze", " ", "raz"}], ",", " ", 
+   RowBox[{
+   "ale", " ", "mo\:017ce", " ", "zwi\:0119kszaj\:0105c", " ", "dawk\:0119", " ",
+     "leku"}]}], "*)"}]], "Input",
+ CellChangeTimes->{{3.9885553026894894`*^9, 
+  3.988555317702486*^9}},ExpressionUUID->"43bd3975-6f2e-c648-927d-\
+a6208c69b438"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"dose", " ", "=", " ", 
+   RowBox[{"ExperimentDosing", "[", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{3.98856640738625*^9},
+ CellLabel->"In[45]:=",ExpressionUUID->"a582e80c-eaf5-0a4f-aaa1-f05de9323384"],
+
+Cell[BoxData[
+ RowBox[{"dose", "[", "\"\<AnimationEarlyLate\>\"", "]"}]], "Input",
+ CellChangeTimes->{
+  3.98856640738625*^9},ExpressionUUID->"59e6ed8d-1a54-4954-aae7-0068ac4c0690"],
+
+Cell[BoxData[
+ RowBox[{"dose", "[", "\"\<PlotEarlyLate\>\"", "]"}]], "Input",
+ CellLabel->"In[25]:=",ExpressionUUID->"7b45b09c-975d-b24b-9892-8710838abb65"],
+
+Cell[BoxData[
+ RowBox[{"dose", "[", "\"\<AnimationSingleCyclic\>\"", "]"}]], "Input",
+ CellLabel->"In[46]:=",ExpressionUUID->"cff7da51-aaf6-fb48-ae46-9ee4370a8588"],
+
+Cell[BoxData[
+ RowBox[{"dose", "[", "\"\<PlotSingleCyclic\>\"", "]"}]], "Input",
+ CellLabel->"In[47]:=",ExpressionUUID->"59748708-0fa9-df47-bb14-0a1f11e43e85"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["4. Mutacja i ucieczka immunologiczna", "Section",ExpressionUUID->"b98ca922-4859-a045-b084-090e70f79502"],
+
+Cell["\<\
+Mutant ma nizsza podatnosc na neutralizacje przez uk\[LSlash]ad \
+odporno\:015bciowy.\
+\>", "Text",
+ CellChangeTimes->{{3.988548752076391*^9, 3.9885487536303577`*^9}, {
+  3.9885517385007343`*^9, 
+  3.9885517550145054`*^9}},ExpressionUUID->"e4acab09-2f24-ba46-9911-\
+aa22b58fcff2"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"mut", " ", "=", " ", 
+   RowBox[{"ExperimentMutation", "[", "]"}]}], ";"}], "\n", 
+ RowBox[{"mut", "[", "\"\<Animation\>\"", "]"}]}], "Input",
+ CellLabel->"In[8]:=",ExpressionUUID->"443e07d6-f8ef-9a46-bb82-5bdacfb208e9"],
+
+Cell[BoxData[
+ RowBox[{"mut", "[", "\"\<Plot\>\"", "]"}]], "Input",
+ CellLabel->"In[10]:=",ExpressionUUID->"05433088-07d9-c149-9ead-73b8d96cdc3e"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["5. Heatmapa", "Section",
+ CellChangeTimes->{{3.988554334052084*^9, 3.9885543382648315`*^9}, 
+   3.988562057912745*^9},ExpressionUUID->"7b8fd8f4-9919-2b48-87aa-\
+145f2206b3bf"],
+
+Cell["\<\
+Heatmapa pokazuje, jak skutecznosc i czas podania leku wplywaja na \
+przezywalnosc tkanki. Niska skutecznosc/pozna interwencja = brak efektu, \
+wysoka skutecznosc/wczesna interwencja = nasycenie. Kazdy punkt to srednia z \
+wielu symulacji (rownoleglych), co zapewnia statystyczna stabilnosc wyniku.\
+\>", "Text",
+ CellChangeTimes->{3.988562056400882*^9, 
+  3.9885906110107822`*^9},ExpressionUUID->"f3b53d75-263a-486e-8dae-\
+3638f122f263"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"hm", "=", 
+   RowBox[{"ExperimentTherapyHeatmap", "[", "]"}]}], ";"}], "\n", 
+ RowBox[{"hm", "[", "\"\<Plot\>\"", "]"}]}], "Input",
+ CellChangeTimes->{{3.9885543474811687`*^9, 3.988554376327057*^9}, 
+   3.988562036404359*^9, 3.988562114707673*^9, 3.988568858877285*^9, 
+   3.9885903110193567`*^9, 3.988590353391532*^9, 3.988590470722744*^9, {
+   3.988590699973536*^9, 3.988590713143878*^9}},
+ CellLabel->"In[93]:=",ExpressionUUID->"f5fb87d2-6718-db4d-b4f1-2ba430b5b9fd"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["6. Funkcja Hilla", "Section",
+ CellChangeTimes->{{3.988554322785486*^9, 
+  3.9885543228497944`*^9}},ExpressionUUID->"7601a2d3-b3ca-ee42-916e-\
+c019c6fcd476"],
+
+Cell["\<\
+Funkcja Hilla pokazuje nieliniowa i nasycajaca odpowiedz immunologiczna. Przy \
+malym stezeniu wirusa odpowiedz jest slaba, przy srednim rosnie szybko, a \
+przy duzym osiaga nasycenie.\
+\>", "Text",ExpressionUUID->"d182f407-40d7-7b44-92d8-5650ad3a7295"],
+
+Cell[BoxData[
+ RowBox[{"HillFunctionManipulate", "[", "]"}]], "Input",
+ CellChangeTimes->{{3.9886096743177423`*^9, 3.988609676234326*^9}},
+ CellLabel->
+  "In[373]:=",ExpressionUUID->"933b2bee-1492-1048-b5ee-cf09af8bc499"],
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"eksp", " ", "=", " ", 
+     RowBox[{"ExperimentHillImpact", "[", "]"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{"eksp", "[", "\"\<PhasePlot\>\"", "]"}]}]}]], "Input",
+ CellChangeTimes->{
+  3.988609595452261*^9, {3.9886097812069883`*^9, 3.988609784712297*^9}},
+ CellLabel->
+  "In[375]:=",ExpressionUUID->"cef1626b-eccd-489d-94c2-c825fc9a4ee9"],
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", 
+  RowBox[{"eksp", "[", "\"\<InfectedPlot\>\"", "]"}]}]], "Input",
+ CellChangeTimes->{{3.9885547835323086`*^9, 3.9885547914637737`*^9}, {
+   3.988608708265188*^9, 3.988608740797494*^9}, {3.9886089705863132`*^9, 
+   3.98860897206945*^9}, 3.988609779378551*^9},
+ CellLabel->
+  "In[377]:=",ExpressionUUID->"85989e29-18f2-fb40-bf72-dd367c5a2c45"],
+
+Cell[BoxData[
+ RowBox[{"eksp", "[", "\"\<VirusPlot\>\"", "]"}]], "Input",
+ CellChangeTimes->{{3.988608978809791*^9, 3.988608989923049*^9}},
+ CellLabel->
+  "In[378]:=",ExpressionUUID->"15df76e2-1dd5-449f-a961-2ef4aef27848"],
+
+Cell[BoxData[
+ RowBox[{"eksp", "[", "\"\<Animation\>\"", "]"}]], "Input",
+ CellChangeTimes->{{3.988609053549156*^9, 3.988609061333817*^9}},
+ CellLabel->
+  "In[379]:=",ExpressionUUID->"f1ebae17-1af5-4630-9bad-de7c0262b2d6"],
+
+Cell[BoxData[
+ RowBox[{"\n", 
+  RowBox[{
+   RowBox[{"bbb", " ", "=", " ", 
+    RowBox[{"ExperimentBBB", "[", "]"}]}], ";"}]}]], "Input",
+ CellChangeTimes->{{3.98863113816013*^9, 3.988631184839901*^9}, 
+   3.988631356104485*^9, {3.988740293307275*^9, 3.988740300364808*^9}, {
+   3.988740356260366*^9, 3.9887403665521107`*^9}, 3.988740408314857*^9},
+ CellLabel->
+  "In[108]:=",ExpressionUUID->"c8831aad-eff8-4dab-b2c1-dc09f198c0f7"],
+
+Cell[BoxData[
+ RowBox[{"CompareBBBAnimations", "[", 
+  RowBox[{
+   RowBox[{"bbb", "[", "\"\<Intact\>\"", "]"}], ",", 
+   RowBox[{"bbb", "[", "\"\<Broken\>\"", "]"}], 
+   ",", "\"\<Bariera nieuszkodzona\>\"", ",", "\"\<Bariera uszkodzona\>\""}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.98863113816013*^9, 3.988631184839901*^9}, {
+   3.988631356104485*^9, 3.98863137896743*^9}, {3.988631442310172*^9, 
+   3.988631450558906*^9}, 3.988740552909981*^9, 3.988741038679059*^9},
+ CellLabel->"In[5]:=",ExpressionUUID->"6b7127c2-070f-4080-8f44-dd2c5fc12a0b"],
+
+Cell[BoxData[
+ RowBox[{"CompareBBBAnimations", "[", 
+  RowBox[{
+   RowBox[{"bbb", "[", "\"\<Broken\>\"", "]"}], ",", 
+   RowBox[{"bbb", "[", "\"\<Drug\>\"", "]"}], 
+   ",", "\"\<Uszkodzona BBB \[LongDash] brak terapii\>\"", 
+   ",", "\"\<Uszkodzona BBB + wczesny lek\>\""}], "]"}]], "Input",
+ CellChangeTimes->{3.988741361775811*^9},
+ CellLabel->"In[6]:=",ExpressionUUID->"e3711b8f-d05b-48fe-bbe9-5ae01f79b33e"],
+
+Cell[BoxData[
+ RowBox[{"CompareBBBInfectedPlot", "[", 
+  RowBox[{
+   RowBox[{"bbb", "[", "\"\<Intact\>\"", "]"}], ",", 
+   RowBox[{"bbb", "[", "\"\<Broken\>\"", "]"}], ",", 
+   RowBox[{"bbb", "[", "\"\<Drug\>\"", "]"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"\"\<Nieuszkodzona\>\"", ",", "\"\<Uszkodzona\>\"", 
+     ",", "\"\<Uszkodzona+lek\>\""}], "}"}]}], "]"}]], "Input",
+ CellChangeTimes->{3.988741465902132*^9},
+ CellLabel->
+  "In[109]:=",ExpressionUUID->"1ba53f5a-dd9f-4f34-9b3d-181fa7e02b96"],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.98863113816013*^9, 3.988631184839901*^9}, {
+   3.988631356104485*^9, 3.98863137896743*^9}, {3.988631442310172*^9, 
+   3.9886314682265663`*^9}, 
+   3.988632650485106*^9},ExpressionUUID->"204f62d9-b0d9-4e45-94bc-\
+2d5220dab7f9"],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.98863113816013*^9, 3.988631184839901*^9}, {
+  3.988631356104485*^9, 3.98863137896743*^9}, {3.988631442310172*^9, 
+  3.988631476526739*^9}},ExpressionUUID->"2982d8c9-02e2-48a1-9366-\
+842385e18f52"]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{962.4, 820.8},
+WindowMargins->{{Automatic, 0}, {Automatic, 0}},
+FrontEndVersion->"14.3 for Microsoft Windows (64-bit) (July 8, 2025)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"9ef19cd1-b872-fd41-ac92-48ae2ebbef7b"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[576, 22, 141, 2, 157, "Title",ExpressionUUID->"16f02df1-ce21-8046-8af9-a7564641a8cc"],
+Cell[720, 26, 219, 6, 33, "Text",ExpressionUUID->"acfdbd5f-a734-9d44-bfc5-ebe10936236e"],
+Cell[CellGroupData[{
+Cell[964, 36, 331, 10, 42, "Input",ExpressionUUID->"6bc50cb3-babd-9642-bc26-ec7b63721f01"],
+Cell[1298, 48, 498, 9, 22, "Print",ExpressionUUID->"520329d4-f8d0-422a-98d7-903c67a733f1"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[1833, 62, 160, 3, 66, "Section",ExpressionUUID->"d9e93eac-278a-0544-9624-49b305292d36"],
+Cell[1996, 67, 350, 7, 55, "Text",ExpressionUUID->"9382ea16-c086-ae4c-bb8d-47c696e936b9"],
+Cell[2349, 76, 247, 5, 28, "Input",ExpressionUUID->"2047815e-5d83-2944-a4e7-620648b42cf8"],
+Cell[2599, 83, 177, 4, 28, "Input",ExpressionUUID->"31276c66-7e83-48e9-92aa-e841f22b5640"],
+Cell[2779, 89, 153, 3, 28, "Input",ExpressionUUID->"e63f8276-e31b-1c4d-b22e-f4fbe9f7977e"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[2969, 97, 88, 0, 66, "Section",ExpressionUUID->"7cea90c8-f59f-c741-ae1f-a9149d50b8e6"],
+Cell[3060, 99, 260, 4, 55, "Text",ExpressionUUID->"4d803e78-8039-0740-9127-21fbc31f201f"],
+Cell[3323, 105, 161, 2, 28, "Input",ExpressionUUID->"1a375669-a9a5-6841-84d8-5de982190d67"],
+Cell[3487, 109, 156, 2, 28, "Input",ExpressionUUID->"a429c23a-41af-fb44-84c1-19c0dbec8638"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[3680, 116, 97, 0, 66, "Section",ExpressionUUID->"ff30d2d5-17b6-424c-a278-4f75e65eaf7d"],
+Cell[3780, 118, 256, 4, 55, "Text",ExpressionUUID->"59803989-2500-b048-a59c-c685e9d2269f"],
+Cell[4039, 124, 423, 11, 28, "Input",ExpressionUUID->"43bd3975-6f2e-c648-927d-a6208c69b438"],
+Cell[4465, 137, 239, 5, 28, "Input",ExpressionUUID->"a582e80c-eaf5-0a4f-aaa1-f05de9323384"],
+Cell[4707, 144, 181, 3, 28, "Input",ExpressionUUID->"59e6ed8d-1a54-4954-aae7-0068ac4c0690"],
+Cell[4891, 149, 156, 2, 28, "Input",ExpressionUUID->"7b45b09c-975d-b24b-9892-8710838abb65"],
+Cell[5050, 153, 164, 2, 28, "Input",ExpressionUUID->"cff7da51-aaf6-fb48-ae46-9ee4370a8588"],
+Cell[5217, 157, 159, 2, 28, "Input",ExpressionUUID->"59748708-0fa9-df47-bb14-0a1f11e43e85"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[5413, 164, 110, 0, 66, "Section",ExpressionUUID->"b98ca922-4859-a045-b084-090e70f79502"],
+Cell[5526, 166, 290, 7, 33, "Text",ExpressionUUID->"e4acab09-2f24-ba46-9911-aa22b58fcff2"],
+Cell[5819, 175, 256, 5, 47, "Input",ExpressionUUID->"443e07d6-f8ef-9a46-bb82-5bdacfb208e9"],
+Cell[6078, 182, 146, 2, 28, "Input",ExpressionUUID->"05433088-07d9-c149-9ead-73b8d96cdc3e"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[6261, 189, 181, 3, 66, "Section",ExpressionUUID->"7b8fd8f4-9919-2b48-87aa-145f2206b3bf"],
+Cell[6445, 194, 448, 8, 77, "Text",ExpressionUUID->"f3b53d75-263a-486e-8dae-3638f122f263"],
+Cell[6896, 204, 506, 9, 47, "Input",ExpressionUUID->"f5fb87d2-6718-db4d-b4f1-2ba430b5b9fd"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[7439, 218, 163, 3, 66, "Section",ExpressionUUID->"7601a2d3-b3ca-ee42-916e-c019c6fcd476"],
+Cell[7605, 223, 263, 4, 55, "Text",ExpressionUUID->"d182f407-40d7-7b44-92d8-5650ad3a7295"],
+Cell[7871, 229, 221, 4, 28, "Input",ExpressionUUID->"933b2bee-1492-1048-b5ee-cf09af8bc499"],
+Cell[8095, 235, 429, 10, 66, "Input",ExpressionUUID->"cef1626b-eccd-489d-94c2-c825fc9a4ee9"],
+Cell[8527, 247, 388, 7, 47, "Input",ExpressionUUID->"85989e29-18f2-fb40-bf72-dd367c5a2c45"],
+Cell[8918, 256, 222, 4, 28, "Input",ExpressionUUID->"15df76e2-1dd5-449f-a961-2ef4aef27848"],
+Cell[9143, 262, 222, 4, 28, "Input",ExpressionUUID->"f1ebae17-1af5-4630-9bad-de7c0262b2d6"],
+Cell[9368, 268, 430, 9, 47, "Input",ExpressionUUID->"c8831aad-eff8-4dab-b2c1-dc09f198c0f7"],
+Cell[9801, 279, 550, 10, 28, "Input",ExpressionUUID->"6b7127c2-070f-4080-8f44-dd2c5fc12a0b"],
+Cell[10354, 291, 411, 8, 28, "Input",ExpressionUUID->"e3711b8f-d05b-48fe-bbe9-5ae01f79b33e"],
+Cell[10768, 301, 496, 11, 28, "Input",ExpressionUUID->"1ba53f5a-dd9f-4f34-9b3d-181fa7e02b96"],
+Cell[11267, 314, 275, 5, 28, "Input",ExpressionUUID->"204f62d9-b0d9-4e45-94bc-2d5220dab7f9"],
+Cell[11545, 321, 245, 4, 28, "Input",ExpressionUUID->"2982d8c9-02e2-48a1-9366-842385e18f52"]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+

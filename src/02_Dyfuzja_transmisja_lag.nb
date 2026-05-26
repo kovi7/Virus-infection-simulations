@@ -1,0 +1,190 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Wolfram 14.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       154,          7]
+NotebookDataLength[      6915,        182]
+NotebookOptionsPosition[      4823,        141]
+NotebookOutlinePosition[      5223,        157]
+CellTagsIndexPosition[      5180,        154]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["02. Dyfuzja, typy transmisji i faza lag", "Title",ExpressionUUID->"65a57190-2d6e-7847-931c-f2737301f592"],
+
+Cell["\<\
+Ten notebook pokazuje 3 najwa\:017cniejsze mechanizmy modelu zaawansowanego: 
+- dyfuzje wolnych wirion\[OAcute]w, 
+- rozdzielenie transmisji cell-free i cell-to-cell  
+- op\[OAcute]\:017aniona produkcja wirusa przez zaka\:017cona kom\[OAcute]rk\
+\:0119. \
+\>", "Text",
+ CellChangeTimes->{
+  3.988547792704256*^9, {3.988547889961046*^9, 3.9885478923729057`*^9}, {
+   3.988550449840786*^9, 
+   3.98855045333556*^9}},ExpressionUUID->"43403a31-fe70-034f-9b9b-\
+73d99beff7a1"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Get", "[", 
+   RowBox[{"FileNameJoin", "[", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"NotebookDirectory", "[", "]"}], ",", 
+      " ", "\"\<FinalVirusModel.wl\>\""}], "}"}], "]"}], "]"}], 
+  ";"}]], "Input",
+ CellLabel->"In[11]:=",ExpressionUUID->"889307a4-361b-964c-99ba-a7400d5e3846"],
+
+Cell[BoxData["\<\"FinalVirusModel.wl loaded. Use RunSimpleScenario, \
+RunScenario or Experiment... functions.\"\>"], "Print",
+ CellChangeTimes->{3.9885495883656883`*^9},
+ CellLabel->
+  "During evaluation of \
+In[11]:=",ExpressionUUID->"8287c0ad-442c-5b4d-84d9-57f545491df5"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["1. Dyfuzja wolnych wirionow wirusa", "Section",
+ CellChangeTimes->{{3.988547969826437*^9, 
+  3.988547970897785*^9}},ExpressionUUID->"d24d0673-a398-744e-9e50-\
+1a7cfe247774"],
+
+Cell["\<\
+Pole V(t,x,y) zmienia sie wedlug schematu reakcji-dyfuzji: produkcja przez \
+komorki produkujace, dyfuzja po siatce i degradacja. Start w centrum ulatwia \
+pokazanie rozchodzenia sie fali.\
+\>", "Text",ExpressionUUID->"be325244-33e2-fb46-bbba-bba917614e3a"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"diff", " ", "=", " ", 
+   RowBox[{"ExperimentDiffusion", "[", "]"}]}], ";"}], "\n", 
+ RowBox[{"diff", "[", "\"\<AnimationLowHigh\>\"", "]"}]}], "Input",
+ CellLabel->"In[12]:=",ExpressionUUID->"7ef2ed34-70fd-124d-9338-c32ed12c096b"],
+
+Cell[BoxData[
+ RowBox[{"diff", "[", "\"\<VirusPlot\>\"", "]"}]], "Input",
+ CellLabel->"In[14]:=",ExpressionUUID->"6ba9d02a-b464-b047-ad06-8cff6a78e92b"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["2. Cell-free vs cell-to-cell", "Section",ExpressionUUID->"d7529fa7-64cc-364a-a73b-678e5befd160"],
+
+Cell["\<\
+Transmisja cell-free zalezy od stezenia wolnych wirionow V. Transmisja \
+cell-to-cell zalezy od kontaktu z zakazonymi sasiadami. \
+\>", "Text",
+ CellChangeTimes->{
+  3.988548104528431*^9},ExpressionUUID->"ae48d1a3-30dd-9d4b-9679-\
+d52da3ad9681"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"tr", " ", "=", " ", 
+   RowBox[{"ExperimentTransmissionModes", "[", "]"}]}], ";"}], "\n", 
+ RowBox[{"tr", "[", "\"\<Animation\>\"", "]"}]}], "Input",
+ CellLabel->"In[15]:=",ExpressionUUID->"abec5f98-923c-e74a-ad9a-a918c1e3d274"],
+
+Cell[BoxData[
+ RowBox[{"tr", "[", "\"\<InfectedPlot\>\"", "]"}]], "Input",
+ CellLabel->"In[17]:=",ExpressionUUID->"a79fbe21-85fe-9242-bad6-3029e821c03d"],
+
+Cell[BoxData[
+ RowBox[{"tr", "[", "\"\<VirusPlot\>\"", "]"}]], "Input",
+ CellLabel->"In[18]:=",ExpressionUUID->"2811924a-0662-8147-80df-b8e2e3929e38"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["3. Faza lag i nieliniowa replikacja wewnatrzkomorkowa", "Section",
+ CellChangeTimes->{{3.9885481247845097`*^9, 
+  3.98854812492749*^9}},ExpressionUUID->"4c9992e6-662c-2841-8906-\
+3adefca30fbf"],
+
+Cell["\<\
+W zaawansowanym modelu zakazona komorka nie produkuje wirusa natychmiast. \
+Najpierw rosnie wewnatrzkomorkowa zmienna RNA zgodnie ze wzrostem \
+logistycznym. Dopiero potem komorka przechodzi do stanu produkujacego wiriony.\
+\>", "Text",ExpressionUUID->"0fb6d616-56c4-244c-9c15-7cd280827906"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"lag", " ", "=", " ", 
+   RowBox[{"ExperimentLagPhase", "[", "]"}]}], ";"}], "\n", 
+ RowBox[{"lag", "[", "\"\<Animation\>\"", "]"}]}], "Input",
+ CellLabel->"In[22]:=",ExpressionUUID->"00d6d750-d430-4946-b95e-d9e4b99e2e19"],
+
+Cell[BoxData[
+ RowBox[{"lag", "[", "\"\<VirusPlot\>\"", "]"}]], "Input",
+ CellLabel->"In[26]:=",ExpressionUUID->"74b5f434-2a05-3745-93f1-96b4f4ac7650"],
+
+Cell[BoxData[
+ RowBox[{"lag", "[", "\"\<InfectedPlot\>\"", "]"}]], "Input",
+ CellLabel->"In[25]:=",ExpressionUUID->"aa707070-23d9-9d40-9e5a-c4be6e02fa65"]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{1141.2, 568.8},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"14.3 for Microsoft Windows (64-bit) (July 8, 2025)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"ec3d1a13-440d-444b-93aa-8df69e4c04c1"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[576, 22, 111, 0, 96, "Title",ExpressionUUID->"65a57190-2d6e-7847-931c-f2737301f592"],
+Cell[690, 24, 481, 11, 99, "Text",ExpressionUUID->"43403a31-fe70-034f-9b9b-73d99beff7a1"],
+Cell[CellGroupData[{
+Cell[1196, 39, 327, 9, 42, "Input",ExpressionUUID->"889307a4-361b-964c-99ba-a7400d5e3846"],
+Cell[1526, 50, 274, 5, 22, "Print",ExpressionUUID->"8287c0ad-442c-5b4d-84d9-57f545491df5"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[1837, 60, 179, 3, 66, "Section",ExpressionUUID->"d24d0673-a398-744e-9e50-1a7cfe247774"],
+Cell[2019, 65, 267, 4, 55, "Text",ExpressionUUID->"be325244-33e2-fb46-bbba-bba917614e3a"],
+Cell[2289, 71, 267, 5, 47, "Input",ExpressionUUID->"7ef2ed34-70fd-124d-9338-c32ed12c096b"],
+Cell[2559, 78, 152, 2, 28, "Input",ExpressionUUID->"6ba9d02a-b464-b047-ad06-8cff6a78e92b"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[2748, 85, 102, 0, 66, "Section",ExpressionUUID->"d7529fa7-64cc-364a-a73b-678e5befd160"],
+Cell[2853, 87, 255, 6, 33, "Text",ExpressionUUID->"ae48d1a3-30dd-9d4b-9679-d52da3ad9681"],
+Cell[3111, 95, 264, 5, 47, "Input",ExpressionUUID->"abec5f98-923c-e74a-ad9a-a918c1e3d274"],
+Cell[3378, 102, 153, 2, 28, "Input",ExpressionUUID->"a79fbe21-85fe-9242-bad6-3029e821c03d"],
+Cell[3534, 106, 150, 2, 28, "Input",ExpressionUUID->"2811924a-0662-8147-80df-b8e2e3929e38"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[3721, 113, 199, 3, 66, "Section",ExpressionUUID->"4c9992e6-662c-2841-8906-3adefca30fbf"],
+Cell[3923, 118, 301, 4, 55, "Text",ExpressionUUID->"0fb6d616-56c4-244c-9c15-7cd280827906"],
+Cell[4227, 124, 257, 5, 47, "Input",ExpressionUUID->"00d6d750-d430-4946-b95e-d9e4b99e2e19"],
+Cell[4487, 131, 151, 2, 28, "Input",ExpressionUUID->"74b5f434-2a05-3745-93f1-96b4f4ac7650"],
+Cell[4641, 135, 154, 2, 28, "Input",ExpressionUUID->"aa707070-23d9-9d40-9e5a-c4be6e02fa65"]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+

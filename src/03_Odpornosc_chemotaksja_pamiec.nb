@@ -1,0 +1,191 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Wolfram 14.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       154,          7]
+NotebookDataLength[      6830,        183]
+NotebookOptionsPosition[      4707,        140]
+NotebookOutlinePosition[      5107,        156]
+CellTagsIndexPosition[      5064,        153]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["03. Odpornosc, chemotaksja i pamiec immunologiczna", "Title",ExpressionUUID->"b8ebf584-9d33-3c4d-bc86-bb414c3edc70"],
+
+Cell["\<\
+Ten notebook dodaje pole chemotaktyczne C(t,x,y), komorki odpornosciowe oraz \
+przeciwciala. Komorki odpornosciowe moga poruszac sie losowo albo po \
+gradiencie pola C.\
+\>", "Text",ExpressionUUID->"7ce74eaf-b871-6d4e-84ff-30b2e11f9a59"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Get", "[", 
+   RowBox[{"FileNameJoin", "[", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"NotebookDirectory", "[", "]"}], ",", 
+      " ", "\"\<FinalVirusModel.wl\>\""}], "}"}], "]"}], "]"}], 
+  ";"}]], "Input",
+ CellLabel->"In[27]:=",ExpressionUUID->"c821f384-02b0-2045-b719-705434ae3d85"],
+
+Cell[BoxData["\<\"FinalVirusModel.wl loaded. Use RunSimpleScenario, \
+RunScenario or Experiment... functions.\"\>"], "Print",
+ CellChangeTimes->{3.9885507423789787`*^9},
+ CellLabel->
+  "During evaluation of \
+In[27]:=",ExpressionUUID->"88b36668-5e7a-3840-84ab-caee6522b2d8"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["1. Ruch losowy vs chemotaksja", "Section",ExpressionUUID->"acbcc6c8-f0a7-1749-8d9a-5fc3e16bb400"],
+
+Cell["\<\
+W prostym modelu komorki odpornosciowe id\:0105 do najblizszej zakazonej \
+komorki. Tu jest lepiej: komorki ida w kierunku chemokin, po polu C(t,x,y), \
+ktore jest produkowane przez komorki zakazone i martwe.\
+\>", "Text",
+ CellChangeTimes->{{3.9885482167130737`*^9, 3.9885482435309734`*^9}, {
+  3.988550910937525*^9, 
+  3.9885509113815193`*^9}},ExpressionUUID->"00e63594-4d20-c448-82e3-\
+8b05550ee04c"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"ch", " ", "=", " ", 
+   RowBox[{"ExperimentChemotaxis", "[", "]"}]}], ";"}], "\n", 
+ RowBox[{"ch", "[", "\"\<Animation\>\"", "]"}]}], "Input",
+ CellLabel->"In[28]:=",ExpressionUUID->"af866c0f-3a63-634c-a70b-6b4ee7da94f2"],
+
+Cell[BoxData[
+ RowBox[{"ch", "[", "\"\<Plot\>\"", "]"}]], "Input",
+ CellLabel->"In[30]:=",ExpressionUUID->"631cd7de-211b-6349-8f82-42712bb99717"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["2. Uklad odpornosciowy osoby mlodszej vs starszej", "Section",
+ CellChangeTimes->{{3.9885482488812504`*^9, 
+  3.988548264457361*^9}},ExpressionUUID->"fba327bc-b3cf-2a4b-be64-\
+f5223a2a5484"],
+
+Cell["\<\
+Mlodsza osoba zwykle ma szybsza i silniejsza odpowiedz na zakazenie, a u \
+starszej osoby jest zwykle opozniona i slabsza. \
+\>", "Text",
+ CellChangeTimes->{{3.988548271284815*^9, 
+  3.988548335172724*^9}},ExpressionUUID->"77a0b218-5838-fd4a-af65-\
+3e6283feb901"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"ip", " ", "=", " ", 
+   RowBox[{"ExperimentImmuneProfiles", "[", "]"}]}], ";"}], "\n", 
+ RowBox[{"ip", "[", "\"\<Animation\>\"", "]"}]}], "Input",
+ CellLabel->"In[31]:=",ExpressionUUID->"a36b4455-9aa3-c94b-b4f5-d6357599ec89"],
+
+Cell[BoxData[
+ RowBox[{"ip", "[", "\"\<Plot\>\"", "]"}]], "Input",
+ CellLabel->"In[33]:=",ExpressionUUID->"1592feac-e08a-b644-9194-e372a4f55a84"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["3. Pamiec immunologiczna", "Section",ExpressionUUID->"824b352e-4c26-0144-876c-2f2fcbc53079"],
+
+Cell["\<\
+Porownujemy dwa uruchomienia: pierwszy kontakt ma opozniona odpowiedz i brak \
+poczatkowych przeciwcial, drugi kontakt ma nizsze opoznienie i dodatni \
+poczatkowy poziom przeciwcial.\
+\>", "Text",ExpressionUUID->"4fcf44f3-51ea-d14c-b037-117907958bf7"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"mem", " ", "=", " ", 
+   RowBox[{"ExperimentMemory", "[", "]"}]}], ";"}], "\n", 
+ RowBox[{"mem", "[", "\"\<Animation\>\"", "]"}]}], "Input",
+ CellLabel->"In[34]:=",ExpressionUUID->"426be5d4-6b0f-4642-833c-7c3ce534b160"],
+
+Cell[BoxData[
+ RowBox[{"mem", "[", "\"\<Plot\>\"", "]"}]], "Input",
+ CellLabel->"In[36]:=",ExpressionUUID->"65e392cb-343b-6042-a9e7-3fd08a39e6e8"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["4. Wykres symulacji odpornosciowej", "Section",
+ CellChangeTimes->{{3.988551639254595*^9, 
+  3.9885516428343334`*^9}},ExpressionUUID->"d620d36f-3c8c-bf49-9604-\
+05c9074bdcab"],
+
+Cell[BoxData[
+ RowBox[{"CompactSummaryPlot", "[", 
+  RowBox[{"ip", "[", "\"\<Fast\>\"", "]"}], "]"}]], "Input",
+ CellLabel->"In[37]:=",ExpressionUUID->"580f1959-594e-8c46-b26f-3fa38370e481"]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{1141.2, 568.8},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"14.3 for Microsoft Windows (64-bit) (July 8, 2025)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"8527088e-9129-404c-90c6-7de1770a991e"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[576, 22, 122, 0, 96, "Title",ExpressionUUID->"b8ebf584-9d33-3c4d-bc86-bb414c3edc70"],
+Cell[701, 24, 247, 4, 55, "Text",ExpressionUUID->"7ce74eaf-b871-6d4e-84ff-30b2e11f9a59"],
+Cell[CellGroupData[{
+Cell[973, 32, 327, 9, 42, "Input",ExpressionUUID->"c821f384-02b0-2045-b719-705434ae3d85"],
+Cell[1303, 43, 274, 5, 22, "Print",ExpressionUUID->"88b36668-5e7a-3840-84ab-caee6522b2d8"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[1614, 53, 103, 0, 66, "Section",ExpressionUUID->"acbcc6c8-f0a7-1749-8d9a-5fc3e16bb400"],
+Cell[1720, 55, 413, 8, 55, "Text",ExpressionUUID->"00e63594-4d20-c448-82e3-8b05550ee04c"],
+Cell[2136, 65, 257, 5, 47, "Input",ExpressionUUID->"af866c0f-3a63-634c-a70b-6b4ee7da94f2"],
+Cell[2396, 72, 145, 2, 28, "Input",ExpressionUUID->"631cd7de-211b-6349-8f82-42712bb99717"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[2578, 79, 196, 3, 66, "Section",ExpressionUUID->"fba327bc-b3cf-2a4b-be64-f5223a2a5484"],
+Cell[2777, 84, 273, 6, 33, "Text",ExpressionUUID->"77a0b218-5838-fd4a-af65-3e6283feb901"],
+Cell[3053, 92, 261, 5, 47, "Input",ExpressionUUID->"a36b4455-9aa3-c94b-b4f5-d6357599ec89"],
+Cell[3317, 99, 145, 2, 28, "Input",ExpressionUUID->"1592feac-e08a-b644-9194-e372a4f55a84"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[3499, 106, 98, 0, 66, "Section",ExpressionUUID->"824b352e-4c26-0144-876c-2f2fcbc53079"],
+Cell[3600, 108, 261, 4, 55, "Text",ExpressionUUID->"4fcf44f3-51ea-d14c-b037-117907958bf7"],
+Cell[3864, 114, 255, 5, 47, "Input",ExpressionUUID->"426be5d4-6b0f-4642-833c-7c3ce534b160"],
+Cell[4122, 121, 146, 2, 28, "Input",ExpressionUUID->"65e392cb-343b-6042-a9e7-3fd08a39e6e8"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[4305, 128, 181, 3, 66, "Section",ExpressionUUID->"d620d36f-3c8c-bf49-9604-05c9074bdcab"],
+Cell[4489, 133, 190, 3, 28, "Input",ExpressionUUID->"580f1959-594e-8c46-b26f-3fa38370e481"]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+

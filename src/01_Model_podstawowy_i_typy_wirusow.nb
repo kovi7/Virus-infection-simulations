@@ -1,0 +1,296 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Wolfram 14.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       154,          7]
+NotebookDataLength[     11044,        288]
+NotebookOptionsPosition[      8969,        245]
+NotebookOutlinePosition[      9400,        262]
+CellTagsIndexPosition[      9357,        259]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["01. Model podstawowy i typy wirus\[OAcute]w", "Title",
+ CellChangeTimes->{{3.9885454544038944`*^9, 
+  3.988545456121971*^9}},ExpressionUUID->"a1885d74-6a08-3540-b9b1-\
+70cfb5dbcc3d"],
+
+Cell["\<\
+Cel: zaczynamy od prostego automatu kom\[OAcute]rkowego, a potem pokazujemy, \
+czym r\[OAcute]\:017cni si\:0119 model zaawansowany z wolnymi wirionami \
+V(t,x,y). 
+To jest punkt odniesienia: infekcja przenosi si\:0119\.99 tylko lokalnie, \
+przez zaka\:017conych s\:0105\.85siad\[OAcute]w.
+\
+\>", "Text",
+ CellChangeTimes->{{3.988545538592863*^9, 3.9885455449880486`*^9}, {
+  3.9885459056698303`*^9, 3.988545942587364*^9}, {3.988546264314209*^9, 
+  3.9885462650250416`*^9}, {3.9885463718371315`*^9, 3.9885464108316536`*^9}, {
+  3.988546528749813*^9, 3.9885466214737263`*^9}, {3.9885469285753117`*^9, 
+  3.988546929097019*^9}, {3.9885538500448513`*^9, 3.988553864633482*^9}, {
+  3.9888066643107147`*^9, 
+  3.9888066664618816`*^9}},ExpressionUUID->"1b5691be-ac4c-5c48-8c52-\
+7e8b3f5b1b4c"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Get", "[", 
+   RowBox[{"FileNameJoin", "[", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"NotebookDirectory", "[", "]"}], ",", 
+      " ", "\"\<FinalVirusModel.wl\>\""}], "}"}], "]"}], "]"}], 
+  ";"}]], "Input",
+ CellLabel->"In[1]:=",ExpressionUUID->"d917cabf-48c1-2448-93bd-f68e419f9d32"],
+
+Cell[BoxData["\<\"FinalVirusModel.wl loaded. Use RunSimpleScenario, \
+RunScenario or Experiment... functions.\"\>"], "Print",
+ CellChangeTimes->{
+  3.9885455529011173`*^9, 3.988545613786625*^9, {3.988547658876383*^9, 
+   3.988547668212511*^9}, 3.9885484965053043`*^9, 3.988548692459999*^9},
+ CellLabel->
+  "During evaluation of \
+In[1]:=",ExpressionUUID->"3dd79c81-c129-b744-82ae-51a55a8406e1"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["1. Prosty model: tylko zakazeni sasiedzi", "Section",ExpressionUUID->"325a1d06-9c32-c940-a149-d72ffa626de4"],
+
+Cell["\<\
+Model prosty ma tylko dyskretne stany komorek. Zakazenie zalezy od liczby \
+zakazonych sasiadow. (Nie ma wolnych wirionow, dyfuzji ani fazy lag produkcji \
+wirusa.)\
+\>", "Text",
+ CellChangeTimes->{{3.988545571242115*^9, 
+  3.988545590468752*^9}},ExpressionUUID->"ef10757d-df41-bb46-8fc9-\
+47a24d31c8f6"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"simple", " ", "=", " ", 
+    RowBox[{"RunSimpleScenario", "[", "\n", "  ", 
+     RowBox[{"\"\<SimpleBaseline\>\"", ",", "\n", "  ", 
+      RowBox[{"<|", 
+       RowBox[{
+        RowBox[{"\"\<InitialInfected\>\"", " ", "->", " ", "1"}], ",", " ", 
+        RowBox[{"\"\<Seed\>\"", " ", "->", " ", "101"}]}], "|>"}]}], "\n", 
+     "]"}]}], ";"}], "\n"}], "\n", 
+ RowBox[{"AnimateResult", "[", 
+  RowBox[{"simple", ",", " ", 
+   RowBox[{"\"\<ShowVirus\>\"", " ", "->", " ", "False"}], ",", " ", 
+   RowBox[{"\"\<ShowImmune\>\"", " ", "->", " ", "False"}]}], "]"}]}], "Input",
+ CellLabel->"In[2]:=",ExpressionUUID->"1a9e159d-7935-ff4b-bc35-b2453f0f9ac1"],
+
+Cell[BoxData[
+ RowBox[{"CompareInfectedPlot", "[", 
+  RowBox[{"<|", 
+   RowBox[{"\"\<prosty model\>\"", " ", "->", " ", "simple"}], "|>"}], 
+  "]"}]], "Input",
+ CellLabel->"In[4]:=",ExpressionUUID->"0db0aea8-4572-5348-a0c6-f88b649d7f49"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+2. Profile fenotypowe, szybki vs wolniejszy bardziej uszkadzajacy\
+\>", "Section",
+ CellChangeTimes->{{3.9885471159171257`*^9, 
+  3.9885471162591076`*^9}},ExpressionUUID->"f974ac38-564c-3841-80ba-\
+d5e006ed161f"],
+
+Cell["\<\
+Porownanie SARS-CoV-2 vs hantawirus, ale niekliniczne. SARS-CoV-2: profil \
+szybki oraz mniej  oraz profil wolniejszy, bardziej uszkadzajacy.\
+\>", "Text",
+ CellChangeTimes->{
+  3.98854578901186*^9, {3.9885470046009617`*^9, 
+   3.9885470203593864`*^9}},ExpressionUUID->"296f1276-ddc9-d147-b571-\
+0dd5d1e75e6b"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"vt", " ", "=", " ", 
+   RowBox[{"ExperimentVirusTypes", "[", "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"vt", "[", "\"\<AnimationPhenotypes\>\"", "]"}]}], "Input",
+ CellChangeTimes->{{3.9885471123107986`*^9, 3.9885471135357*^9}},
+ CellLabel->"In[8]:=",ExpressionUUID->"610697c2-f3c7-1e41-b41f-782e20c7672c"],
+
+Cell[BoxData[
+ RowBox[{"vt", "[", "\"\<PlotPhenotypes\>\"", "]"}]], "Input",
+ CellLabel->"In[10]:=",ExpressionUUID->"cba728f9-92d2-d846-b50e-567755ccdf0c"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["3. Prosty model vs model zaawansowany", "Section",
+ CellChangeTimes->{{3.9886407006778708`*^9, 3.988640713631261*^9}, {
+  3.9886408468225403`*^9, 
+  3.9886408470760193`*^9}},ExpressionUUID->"8ce4a12d-cfad-cb44-9ca5-\
+3d006a09de04"],
+
+Cell["\<\
+Model zaawansowany nadal pokazujemy jako czytelna siatke komorek, ale pod \
+spodem ma pola ciagle: V dla wolnych wirionow, C dla sygnalu chemotaktycznego \
+i A dla przeciwcial (wi\:0119cej o tym w kolejnych notatnikach). W tym \
+porownaniu odpornosc\.87 jest wylaczona, zeby skupic sie tylko na wirionach i \
+dyfuzji.\
+\>", "Text",
+ CellChangeTimes->{
+  3.988545852521509*^9},ExpressionUUID->"c4eb59b0-95ef-ac44-aa89-\
+b31409b952f0"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Grid", "[", "\n", " ", 
+  RowBox[{
+   RowBox[{"{", "\n", "  ", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"Style", "[", 
+        RowBox[{"\"\<Model prosty\>\"", ",", " ", "14", ",", " ", "Bold"}], 
+        "]"}], ",", " ", 
+       RowBox[{"Style", "[", 
+        RowBox[{"\"\<Model zaawansowany\>\"", ",", " ", "14", ",", " ", 
+         "Bold"}], "]"}]}], "}"}], ",", "\n", "  ", 
+     RowBox[{"{", 
+      RowBox[{"\"\<Infekcja tylko od zakazonych sasiadow.\>\"", ",", 
+       " ", "\"\<Infekcja przez sasiadow oraz przez wolne wiriony V(t,x,y).\>\
+\""}], "}"}], ",", "\n", "  ", 
+     RowBox[{"{", 
+      RowBox[{"\"\<Brak dyfuzji.\>\"", ",", 
+       " ", "\"\<Wolne wiriony dyfunduja po siatce.\>\""}], "}"}], ",", "\n", 
+     "  ", 
+     RowBox[{"{", 
+      RowBox[{"\"\<Brak fazy lag.\>\"", ",", 
+       " ", "\"\<Komorka ma faze lag i wewnatrzkomorkowa replikacje \
+RNA.\>\""}], "}"}], ",", "\n", "  ", 
+     RowBox[{"{", 
+      RowBox[{"\"\<Model startowy.\>\"", ",", 
+       " ", "\"\<Model wierniejszy biologiczne, ale nadal nieidealny.\>\""}], 
+      "}"}]}], "\n", " ", "}"}], ",", "\n", " ", 
+   RowBox[{"Frame", " ", "->", " ", "All"}], ",", "\n", " ", 
+   RowBox[{"Alignment", " ", "->", " ", "Left"}], ",", "\n", " ", 
+   RowBox[{"Spacings", " ", "->", " ", 
+    RowBox[{"{", 
+     RowBox[{"2", ",", " ", "1"}], "}"}]}], ",", "\n", " ", 
+   RowBox[{"Background", " ", "->", " ", 
+    RowBox[{"{", 
+     RowBox[{"None", ",", " ", 
+      RowBox[{"{", 
+       RowBox[{
+       "LightYellow", ",", " ", "White", ",", " ", "White", ",", " ", "White",
+         ",", " ", "White"}], "}"}]}], "}"}]}]}], "\n", "]"}]], "Input",
+ CellChangeTimes->{{3.9885461093184147`*^9, 3.9885461297958717`*^9}},
+ CellLabel->"In[5]:=",ExpressionUUID->"8804d047-d065-e74a-b440-0484311de4bf"],
+
+Cell[BoxData[
+ TagBox[GridBox[{
+    {
+     StyleBox["\<\"Model prosty\"\>",
+      StripOnInput->False,
+      FontSize->14,
+      FontWeight->Bold], 
+     StyleBox["\<\"Model zaawansowany\"\>",
+      StripOnInput->False,
+      FontSize->14,
+      FontWeight->Bold]},
+    {"\<\"Infekcja tylko od zakazonych sasiadow.\"\>", "\<\"Infekcja przez \
+sasiadow oraz przez wolne wiriony V(t,x,y).\"\>"},
+    {"\<\"Brak dyfuzji.\"\>", "\<\"Wolne wiriony dyfunduja po siatce.\"\>"},
+    {"\<\"Brak fazy lag.\"\>", "\<\"Komorka ma faze lag i wewnatrzkomorkowa \
+replikacje RNA.\"\>"},
+    {"\<\"Model startowy.\"\>", "\<\"Model wierniejszy biologiczne, ale nadal \
+nieidealny.\"\>"}
+   },
+   AutoDelete->False,
+   GridBoxAlignment->{"Columns" -> {{Left}}},
+   GridBoxBackground->{"Columns" -> {{None}}, "Rows" -> {
+       RGBColor[1, 1, 0.85], 
+       GrayLevel[1], 
+       GrayLevel[1], 
+       GrayLevel[1], 
+       GrayLevel[1]}},
+   GridBoxFrame->{"Columns" -> {{True}}, "Rows" -> {{True}}},
+   GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+   GridBoxSpacings->{"Columns" -> {{2}}, "Rows" -> {{1}}}],
+  "Grid"]], "Output",
+ CellChangeTimes->{3.988545755275097*^9, 3.9885487947222595`*^9},
+ CellLabel->"Out[5]=",ExpressionUUID->"96b06372-d771-604f-bf72-619e2252c5df"]
+}, Open  ]],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"sa", " ", "=", " ", 
+   RowBox[{"ExperimentSimpleVsAdvanced", "[", "]"}]}], ";"}], "\n", 
+ RowBox[{"sa", "[", "\"\<Animation\>\"", "]"}]}], "Input",
+ CellLabel->"In[6]:=",ExpressionUUID->"beb9988e-d093-c146-9eb8-39d1cbfbccf9"]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{961.1999999999999, 820.8},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+LightDark->"Light",
+FrontEndVersion->"14.3 for Microsoft Windows (64-bit) (July 8, 2025)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"50bad4ae-899f-7c4e-bb8a-ddb503f8d1a0"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[576, 22, 188, 3, 96, "Title",ExpressionUUID->"a1885d74-6a08-3540-b9b1-70cfb5dbcc3d"],
+Cell[767, 27, 796, 15, 99, "Text",ExpressionUUID->"1b5691be-ac4c-5c48-8c52-7e8b3f5b1b4c"],
+Cell[CellGroupData[{
+Cell[1588, 46, 326, 9, 42, "Input",ExpressionUUID->"d917cabf-48c1-2448-93bd-f68e419f9d32"],
+Cell[1917, 57, 394, 7, 22, "Print",ExpressionUUID->"3dd79c81-c129-b744-82ae-51a55a8406e1"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[2348, 69, 114, 0, 66, "Section",ExpressionUUID->"325a1d06-9c32-c940-a149-d72ffa626de4"],
+Cell[2465, 71, 314, 7, 55, "Text",ExpressionUUID->"ef10757d-df41-bb46-8fc9-47a24d31c8f6"],
+Cell[2782, 80, 697, 15, 137, "Input",ExpressionUUID->"1a9e159d-7935-ff4b-bc35-b2453f0f9ac1"],
+Cell[3482, 97, 237, 5, 28, "Input",ExpressionUUID->"0db0aea8-4572-5348-a0c6-f88b649d7f49"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[3756, 107, 222, 5, 66, "Section",ExpressionUUID->"f974ac38-564c-3841-80ba-d5e006ed161f"],
+Cell[3981, 114, 320, 7, 55, "Text",ExpressionUUID->"296f1276-ddc9-d147-b571-0dd5d1e75e6b"],
+Cell[4304, 123, 349, 6, 47, "Input",ExpressionUUID->"610697c2-f3c7-1e41-b41f-782e20c7672c"],
+Cell[4656, 131, 155, 2, 28, "Input",ExpressionUUID->"cba728f9-92d2-d846-b50e-567755ccdf0c"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[4848, 138, 237, 4, 66, "Section",ExpressionUUID->"8ce4a12d-cfad-cb44-9ca5-3d006a09de04"],
+Cell[5088, 144, 443, 9, 77, "Text",ExpressionUUID->"c4eb59b0-95ef-ac44-aa89-b31409b952f0"],
+Cell[CellGroupData[{
+Cell[5556, 157, 1822, 42, 354, "Input",ExpressionUUID->"8804d047-d065-e74a-b440-0484311de4bf"],
+Cell[7381, 201, 1283, 32, 142, "Output",ExpressionUUID->"96b06372-d771-604f-bf72-619e2252c5df"]
+}, Open  ]],
+Cell[8679, 236, 262, 5, 47, "Input",ExpressionUUID->"beb9988e-d093-c146-9eb8-39d1cbfbccf9"]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
