@@ -1,5 +1,10 @@
 # Projekt: przestrzenne modelowanie infekcji wirusowej w Wolfram Mathematica
 
+## Autorzy
+- Agata Paluch
+- Basia Pawłowska
+- Justyna Kowalska
+
 ## 1. Cel projektu
 
 Główna idea projektu:
